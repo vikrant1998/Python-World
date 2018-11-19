@@ -110,13 +110,69 @@ class LinkedList(object):
 				tempNode.next = nextNode
 			else:
 				tempNode = tempNode.next
-				
+	
+# Add node to end of the list.
+def AddNewNode(head, val):
+	if (head == None):
+		head = ListNode(val)
+		return head
+	
+	tempNode = head
+	while (tempNode.next != None):
+		tempNode = tempNode.next
+	
+	tempNode.next = ListNode(val)
+	return head
+		
+
+# Merge two sorted lists.
+def MergeTwoSortedLists(l1, l2):
+	
+	newList = None
+	# If one of the lists is empty.
+	if (l1 == None):
+		newList = l2
+		return newList
+	if (l2 == None):
+		newList = l1
+		return newList
+	
+	l1Temp = l1
+	l2Temp = l2
+	
+	# Iterate through both the lists.
+	while (l1Temp != None and l2Temp != None):
+		if (l1Temp.val < l2Temp.val):
+			newList = AddNewNode(newList, l1Temp.val)
+			l1Temp = l1Temp.next
+		else:
+			newList = AddNewNode(newList, l2Temp.val)
+			l2Temp = l2Temp.next
+		
+	# Rest of list1.
+	while (l1Temp != None):
+		newList = AddNewNode(newList, l1Temp.val)
+		l1Temp = l1Temp.next
+		
+	# Rest of list2.
+	while (l2Temp != None):
+		newList = AddNewNode(newList, l2Temp.val)
+		l2Temp = l2Temp.next
+
+	return newList
 				
 if __name__ == "__main__":
-	l = LinkedList()
-	l.AddNode(1)
-	l.AddNode(1)
-	l.AddNode(1)
+	l1 = None
+	l1 = AddNewNode(l1, 1)
+	l1 = AddNewNode(l1, 3)
+	l1 = AddNewNode(l1, 5)
 	
-	l.RemoveDuplicatesFromSortedList()
-	l.PrintNodes()
+	l2 = None
+	l2 = AddNewNode(l2, 2)
+	l2 = AddNewNode(l2, 4)
+	
+	l3 = MergeTwoSortedLists (l1, l2)
+	l3Temp = l3
+	while (l3Temp != None):
+		print (l3Temp.val)
+		l3Temp = l3Temp.next
