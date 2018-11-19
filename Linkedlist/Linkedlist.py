@@ -93,17 +93,30 @@ class LinkedList(object):
 				tempNode.next = nextNode
 			else:
 				tempNode = tempNode.next
-			
+				
+	# Remove duplicates from sorted list.
+	def RemoveDuplicatesFromSortedList(self):
 	
+		# Empty list.
+		if (self.head == None):
+			return
+
+		# Iterate through the list and delete.
+		tempNode = self.head
+		while (tempNode != None and tempNode.next != None):
+			if (tempNode.val == tempNode.next.val):
+				nextNode = tempNode.next.next
+				del(tempNode.next)
+				tempNode.next = nextNode
+			else:
+				tempNode = tempNode.next
+				
+				
 if __name__ == "__main__":
 	l = LinkedList()
 	l.AddNode(1)
 	l.AddNode(1)
 	l.AddNode(1)
-	l.AddNode(2)
-	l.AddNode(3)
-	l.AddNode(1)
-	l.AddNode(1)
 	
-	l.DeleteAllOccurences(2)
+	l.RemoveDuplicatesFromSortedList()
 	l.PrintNodes()
