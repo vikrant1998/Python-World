@@ -68,6 +68,42 @@ class LinkedList(object):
 			tempNode.next = nextFinal
 		
 		return
+		
+	# Delete all occurences of a value.
+	def DeleteAllOccurences(self, val):
+		
+		# Empty list.
+		if (self.head == None):
+			return
+
+		# Delete the elements in the front.
+		tempNode = self.head
+		while (tempNode != None and tempNode.val == val and tempNode == self.head):
+			nextNode = tempNode.next
+			del(tempNode)
+			tempNode = nextNode
+			self.head = tempNode
+			
+		# Delete the rest of the elements.
+		tempNode = self.head
+		while (tempNode != None):
+			if (tempNode.next != None and tempNode.next.val == val):
+				nextNode = tempNode.next.next
+				del(tempNode.next)
+				tempNode.next = nextNode
+			else:
+				tempNode = tempNode.next
+			
 	
 if __name__ == "__main__":
 	l = LinkedList()
+	l.AddNode(1)
+	l.AddNode(1)
+	l.AddNode(1)
+	l.AddNode(2)
+	l.AddNode(3)
+	l.AddNode(1)
+	l.AddNode(1)
+	
+	l.DeleteAllOccurences(2)
+	l.PrintNodes()
