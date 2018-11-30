@@ -9,8 +9,7 @@ class Graph(object):
 		self.graph[u].append(v)
 
 	def BFS(self, u):
-		visited, queue = set(), deque([u])
-		visited.add(u)
+		visited, queue = set([u]), deque([u])
 		while queue: 
 			vertex = queue.popleft()
 			print (vertex)
