@@ -4,7 +4,7 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
-class BinaryTree(object):
+class BinarySearchTree(object):
     def __init__(self):
         self.root = None
 
@@ -86,7 +86,7 @@ class BinaryTree(object):
         del(root)
 
 if __name__ == "__main__":
-    b = BinaryTree()
+    b = BinarySearchTree()
 
     b.InsertNode(5)
     b.InsertNode(3)
