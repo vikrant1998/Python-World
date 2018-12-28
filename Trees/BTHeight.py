@@ -15,7 +15,6 @@ class BinarySearchTree(object):
             return
 
         self._InsertNode(self.root, val)
-        return
 
     def _InsertNode(self, root, val):
         if val < root.val:
