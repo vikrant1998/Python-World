@@ -19,13 +19,17 @@ class Solution(object):
     def _isSameTree(self, p, q, res):
         if (p == None and q == None) or res[0] == False:
             return
-        elif (p == None and q != None):
+        if (p == None and q != None):
              res[0] = False
              return
-        elif (p != None and q == None):
+        if (p != None and q == None):
             res[0] = False
             return
-        elif p.val != q.val:
+
+        self._isSameTree(p.left, q.left, res)
+        self._isSameTree(p.right, q.right, res)
+
+        if p.val != q.val:
             res[0] = False
             return
 
@@ -39,7 +43,7 @@ if __name__ == "__main__":
     nb1 = TreeNode(1)
     nb2 = TreeNode(2)
     nb3 = TreeNode(3)
-    nb1.left = na2; nb1.right = na3
+    nb1.left = nb2; nb1.right = nb3
 
     s = Solution()
     print(s.isSameTree(na1, nb1))
