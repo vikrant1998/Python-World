@@ -27,27 +27,30 @@ def ChangeNode(node):
 
 def ChangeStuff(s):
     s.add(1)
+    s = 'lol'
+    s = set()
+    s.add(2)
 
 if __name__ == "__main__":
     l1 = [1, 2, 3, 4, 5]
     ListScope(l1)
     #print(l1)
 
-    a = "hello"
-    b = 1
-    VarScope(a, b)
-    print(a, b)
+    #a = "hello"
+    #b = 1
+    #VarScope(a, b)
+    #print(a, b)
 
-    b = [1]
+    #b = [1]
     #VarScope(b)
     #print(b)
 
-    n1 = ListNode(1)
-    ChangeNode(n1)
+    #n1 = ListNode(1)
+    #ChangeNode(n1)
     #print(n1.val)
     #print(n1.next.val)
 
     s = set()
     m = dict()
     ChangeStuff(s)
-    #print(s)
+    print(s)
