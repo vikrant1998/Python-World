@@ -14,6 +14,7 @@ class Solution(object):
         :rtype: List[int]
         """
         if root == None: return []
+
         self.parentMap = dict()
         self._SetParent(root)
         self.targetFound = None
@@ -21,25 +22,50 @@ class Solution(object):
         if self.targetFound == None: return []
 
         self.nearList = []
-        if K == 1:
-            if targetFound.left != None:
-                self.nearList.append(targetFound.left.val)
-            if targetFound.right != None:
-                self.nearList.append(targetFound.right.val)
-            if self.parentMap[targetFound] != None:
-                self.nearList.append(self.parentMap[targetFound].val)
-
         self.lrcount = 0
+
         self._FindNodes(self.targetFound, K)
+
+        upVal = self.parentMap[self.targetFound]
+        if upVal == None: return self.nearList
+        prevVal = self.targetFound
+        if upVal.left == prevVal:
+            count = 1
+            while upVal != None:
+                if count == K:
+                    self.nearList.append(upVal.val)
+                    break
+
+                if upVal.right == prevVal:
+                    self._FindNodes(upVal.left, K - count - 1)
+                else:
+                    self._FindNodes(upVal.right, K - count - 1)
+                prevVal = upVal
+                upVal = self.parentMap[upVal]
+                count += 1
+        else:
+            count = 1
+            while upVal != None:
+                if count == K:
+                    self.nearList.append(upVal.val)
+                    break
+                if upVal.right == prevVal:
+                    self._FindNodes(upVal.left, K - count - 1)
+                else:
+                    self._FindNodes(upVal.right, K - count - 1)
+                prevVal = upVal
+                upVal = self.parentMap[upVal]
+                count += 1
+
         return self.nearList
 
-    def _FindNodesLR(self, root, K):
+    def _FindNodes(self, root, K):
         if root == None: return
         if self.lrcount == K:
             self.nearList.append(root.val)
         self.lrcount += 1
-        self._FindNodesLR(root.left, K)
-        self._FindNodesLR(root.right, K)
+        self._FindNodes(root.left, K)
+        self._FindNodes(root.right, K)
         self.lrcount -= 1
 
     def _Findtarget(self, root, target):
@@ -85,4 +111,4 @@ if __name__ == "__main__":
     n2.left = n7; n2.right = n4
 
     s = Solution()
-    s.distanceK(n3, n5, 2)
+    print(s.distanceK(n3, n2, 4))
