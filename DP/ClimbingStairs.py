@@ -4,20 +4,25 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        self.count = 0
-        self._recurse(0, n)
-        print(self.count)
+        self.cache = dict()
+        return self._recurse(0, n)
 
-    def _recurse(ind, n):
+    def _recurse(self, ind, n):
         if ind == n:
-            self.count += 1
-            return
+            return 1
+        
+        if ind > n:
+            return 0
 
-        self.count += 1
-        self._recurse(ind + 1, n)
-        self._recurse(ind + 2, n)
+        if ind in self.cache:
+            return self.cache[ind]
+        
+        oneStep = self._recurse(ind + 1, n)
+        twoStep = self._recurse(ind + 2, n)
+        self.cache[ind] = oneStep + twoStep
+        return oneStep + twoStep
 
 if __name__ == "__main__":
-    n = 5
+    n = 3
     s = Solution()
     print(s.climbStairs(n))
