@@ -11,7 +11,6 @@ class Solution(object):
         self.graph = defaultdict(list)
         self.distances = dict()
         self._BuildGraph(matrix)
-        hasInEdge = self._edgeCheck()
 
         q = deque()
         for key, value in self.graph.items():
@@ -34,13 +33,6 @@ class Solution(object):
                         maxDist = self.distances[neighbor]
 
         return maxDist
-
-    def _edgeCheck(self):
-        hasInEdge = set()
-        for key, value in self.graph.items():
-            for num in value:
-                hasInEdge.add(num)
-        return hasInEdge
 
     def _BuildGraph(self, matrix):
         i, j = 0, 0
