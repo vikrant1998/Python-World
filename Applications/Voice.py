@@ -1,63 +1,60 @@
+#!/usr/bin/env python3
+
+import time
+import speech_recognition as sr
 import speech_recognition as sr
 from win32com.client import Dispatch
 import datetime
 import time
 
-speak = Dispatch("SAPI.SpVoice")
-#Record Audio
-r = sr.Recognizer()
-with sr.Microphone() as source:
-    print("Hello how can i help you?")
-    speak.Speak("Hello how can i help you?")
-    audio = r.listen(source)
-    while(r.recognize_google(audio) != "bye"):
-        if (r.recognize_google(audio) == "hello"):
+def SpeakSentence(sentence):
+    speak = Dispatch("SAPI.SpVoice")
+    speak.Speak(sentence)
+
+def callback(recognizer, audio):
+    try:
+        text = recognizer.recognize_google(audio)
+        if (text.lower() == "hello"):
             print("Good morning")
-            speak.Speak("Good morning")
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "good morning"):
+            SpeakSentence("Good morning")
+        elif(text.lower() == "good morning"):
             print("how are you doing today")
-            speak.Speak("how are you doing today")
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "i am doing great"):
+            SpeakSentence("how are you doing today")
+        elif(text.lower() == "i am doing great"):
             print("good to know")
-            speak.Speak("Good to know")
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "what time is it"):
+            SpeakSentence("Good to know")
+        elif(text.lower() == "what time is it"):
             t = time.strftime("%I:%M:%S")
             print("The current time is ",t)
-            speak.Speak(t)
-            audio= r.listen(source)
-        if(r.recognize_google(audio) == "who were you developed by"):
+            SpeakSentence("The current time is " + str(t))
+        elif(text.lower() == "who were you developed by"):
             print("I was developed by Kanishka Balaji, Pallavi Pandey, Isha Gandhi and Elsa Jerry")
-            speak.Speak("I was developed by Kanishka Balaji, Pallavi Pandey, Isha Gandhi and Elsa Jerry")
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "what is your favourite colour"):
+            SpeakSentence("I was developed by Kanishka Balaji, Pallavi Pandey, Isha Gandhi and Elsa Jerry")
+        elif(text.lower() == "what is your favourite colour"):
             print("My favourite color is blue")
-            speak.Speak("My favourite color is blue")
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "are you a robot"):
+            SpeakSentence("My favourite color is blue")
+        elif(text.lower() == "are you a robot"):
             print("no i am not a robot. i am a virtual assistant")
-            speak.Speak("I am not a robot. I am a virtual assistant.")
-        if(r.recognize_google(audio) == "what is the date"):
+            SpeakSentence("I am not a robot. I am a virtual assistant.")
+        elif(text.lower() == "what is the date"):
             today = datetime.date.today()
             print("the date is: ",today)
-            speak.Speak(today)
-            audio = r.listen(source)
-        if(r.recognize_google(audio) == "bye"):
+            SpeakSentence(today)
+        elif(text.lower() == "bye"):
             print("good bye")
-            speak.Speak("good bye")
-            audio = r.listen(source)
-            break
-                    
-    
-#Speech recognition using Google Speech Recognition
+            SpeakSentence("good bye")
+    except:
+        pass
 
-try:
-    while(audio != r.recognize_google(audio) ):
-        speak.Speak("You said: "+r.recognize_google(audio))
-except sr.UnknownValueError:
-    print("Google Speech Recognition could not understand audio")
-    speak.Speak("Google Speech Recognition could not understand audio")
-except sr.RequestError as e:
-    print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+def SpeakFunction():
+    r = sr.Recognizer()
+    m = sr.Microphone()
+    with m as source:
+        r.adjust_for_ambient_noise(source)
+
+    stop_listening = r.listen_in_background(m, callback)
+    while True: a = 0
+
+if __name__ == "__main__":
+    SpeakFunction()
