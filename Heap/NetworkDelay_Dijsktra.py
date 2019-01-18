@@ -24,9 +24,9 @@ class Solution(object):
         while q:
             dist, node = heapq.heappop(q)
             for neighbor in graph[node]:
-                    if distances[neighbor[0]] > distances[node] + neighbor[1]:
-                        distances[neighbor[0]] = distances[node] + neighbor[1]
-                        heapq.heappush(q, (distances[neighbor[0]], neighbor[0]))
+                if distances[neighbor[0]] > distances[node] + neighbor[1]:
+                    distances[neighbor[0]] = distances[node] + neighbor[1]
+                    heapq.heappush(q, (distances[neighbor[0]], neighbor[0]))
 
         maxVal = -float("inf")
         for key, value in distances.items():
