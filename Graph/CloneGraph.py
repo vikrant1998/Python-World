@@ -4,6 +4,7 @@ class UndirectedGraphNode:
         self.label = x
         self.neighbors = []
 
+''' BFS '''
 class Solution:
     # @param node, a undirected graph node
     # @return a undirected graph node
@@ -36,6 +37,21 @@ class Solution:
                     cq.append(cloneQ.neighbors[-1])
             
         return headNode
+
+''' DFS '''
+class Solution:
+    # @param node, a undirected graph node
+    # @return a undirected graph node
+    def cloneGraph(self, node):
+        if node == None: return None
+        self.cloneMap = dict()
+        return self._DFS(node)
+
+    def _DFS(self, node):
+        if node.label in self.cloneMap: return self.cloneMap[node.label]
+        self.cloneMap[node.label] = UndirectedGraphNode(node.label)
+        for neighbor in node.neighbors: self.cloneMap[node.label].neighbors.append(self._DFS(neighbor))
+        return self.cloneMap[node.label]
 
 if __name__ == "__main__":
     n1 = UndirectedGraphNode(1)
