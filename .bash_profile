@@ -1,1 +1,1 @@
-alias bp='git add .;git commit -am .;git push'
+alias bp='git add .;git commit -am .;git push origin master'
