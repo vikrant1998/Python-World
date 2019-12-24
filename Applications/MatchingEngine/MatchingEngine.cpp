@@ -91,22 +91,5 @@ int main()
 	// orderBook.deleteOrderUnit(0, 10.0);
 	// orderBook.printBuyBook();
 
-	vector<int> heapTree;
-
-	insert(heapTree, 3);
-	insert(heapTree, 4);
-	insert(heapTree, 9);
-	insert(heapTree, 5);
-	insert(heapTree, 2);
-
-	cout << "Max-Heap array: ";
-	printArray(heapTree);
-
-	deleteNode(heapTree, 4);
-
-	cout << "After deleting an element: ";
-
-	printArray(heapTree);
-
 	return 0;
 }
