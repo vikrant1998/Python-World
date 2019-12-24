@@ -5,6 +5,8 @@
 #include <queue>
 
 #include "SamePriceOrderChain.hpp"
+#include "OrderUnit.hpp"
+#include "Order.hpp"
 
 using namespace std;
 
@@ -61,37 +63,32 @@ void ParseInput()
 int main()
 {
 	//ParseInput();
-	// OrderUnit o1 = OrderUnit(100);
-	// OrderUnit o2 = OrderUnit(902);
-	// OrderUnit o3 = OrderUnit(81);
-	// OrderUnit o4 = OrderUnit(10002);
+	OrderUnit *o1 = new OrderUnit(100);
+	Order *ord1 = new Order(1,1,1,1,100);
+	Order *ord2 = new Order(2,1,1,1,100);
+	Order *ord3 = new Order(3,1,1,1,100);
+	o1->insertIntoChain(ord1);
+	o1->insertIntoChain(ord2);
+	o1->insertIntoChain(ord3);
+	o1->deleteFromChain(ord3);
+	o1->orderChain.printChain();
+	OrderUnit *o2 = new OrderUnit(999);
+	OrderUnit *o3 = new OrderUnit(32);
+	OrderUnit *o4 = new OrderUnit(1002);
 
-	// priority_queue<OrderUnit, vector<OrderUnit>, BuyComparison> Q; 
-	// Q.push(o1);
-	// Q.push(o2);
-	// Q.push(o3);
-	// Q.push(o4);
+	priority_queue<OrderUnit*, vector<OrderUnit*>, BuyComparison> Q; 
+	Q.push(o1);
+	Q.push(o2);
+	while (!Q.empty()) 
+	{ 
+		OrderUnit *p = Q.top(); 
+		Q.pop();
+		cout << p->getPrice() << "\n"; 
+	}
 
-	// while (!Q.empty()) 
-	// { 
-	// 	OrderUnit p = Q.top(); 
-	// 	Q.pop(); 
-	// 	cout << p.getPrice() << "\n"; 
-	// }
-
-	SamePriceTimeOrderChain s;
-	Order *order1 = new Order(1, 1, 1, 1, 1);
-	Order *order2 = new Order(1, 1, 1, 1, 2);
-	Order *order3 = new Order(1, 1, 1, 1, 3);
-	Order *order4 = new Order(1, 1, 1, 1, 4);
-	Order *order5 = new Order(1, 1, 1, 1, 5);
-	s.InsertIntoChain(order1);
-	s.InsertIntoChain(order2);
-	s.InsertIntoChain(order3);
-	s.InsertIntoChain(order4);
-	s.InsertIntoChain(order5);
-	s.PrintChain();
-	cout << endl;
-	s.PrintChainRev();
+	delete o1;
+	delete o2;
+	delete o3;
+	delete o4;
 	return 0;
 }

@@ -1,15 +1,9 @@
+#ifndef ORDER_H_
+#define ORDER_H_
+
 #include <iostream>
 
 using namespace std;
-
-class OrderUnit
-{
-	public:
-		OrderUnit(int price) {this->price = price;}
-		double getPrice() {return price;}
-	private:
-		double price;
-};
 
 class Order
 {
@@ -31,18 +25,12 @@ class Order
 			this->quantity = quantity;
 			this->price    = price; 
 		}
-		Order* getNext(){ return next; }
-		Order* getPrev(){ return prev; }
-		void   setNext(Order *next){ this->next = next; }
-		void   setPrev(Order *prev){ this->prev = prev; }
+		Order* getNext() { return next; }
+		Order* getPrev() { return prev; }
+		void   setNext(Order *next) { this->next = next; }
+		void   setPrev(Order *prev) { this->prev = prev; }
 
-		double   getPrice(){return price;}
+		double getPrice() { return price; }
 };
 
-struct BuyComparison 
-{ 
-    bool operator()(OrderUnit o1, OrderUnit o2) 
-    { 
-        return o1.getPrice() < o2.getPrice(); 
-    } 
-};
+#endif
