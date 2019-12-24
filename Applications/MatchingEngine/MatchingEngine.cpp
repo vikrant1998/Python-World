@@ -7,6 +7,7 @@
 #include "SamePriceOrderChain.hpp"
 #include "OrderUnit.hpp"
 #include "Order.hpp"
+#include "OrderBook.hpp"
 
 using namespace std;
 
@@ -60,35 +61,52 @@ void ParseInput()
 	}
 } 
 
-int main()
+void printPriorityQueue(priority_queue<OrderUnit*, vector<OrderUnit*>, BuyComparison>& Q)
 {
-	//ParseInput();
-	OrderUnit *o1 = new OrderUnit(100);
-	Order *ord1 = new Order(1,1,1,1,100);
-	Order *ord2 = new Order(2,1,1,1,100);
-	Order *ord3 = new Order(3,1,1,1,100);
-	o1->insertIntoChain(ord1);
-	o1->insertIntoChain(ord2);
-	o1->insertIntoChain(ord3);
-	o1->deleteFromChain(ord3);
-	o1->orderChain.printChain();
-	OrderUnit *o2 = new OrderUnit(999);
-	OrderUnit *o3 = new OrderUnit(32);
-	OrderUnit *o4 = new OrderUnit(1002);
-
-	priority_queue<OrderUnit*, vector<OrderUnit*>, BuyComparison> Q; 
-	Q.push(o1);
-	Q.push(o2);
 	while (!Q.empty()) 
 	{ 
 		OrderUnit *p = Q.top(); 
 		Q.pop();
-		cout << p->getPrice() << "\n"; 
+		cout << "Price Level: " << p->getPrice() << endl;
+		p->orderChain.printChain();
+		cout << "---------------" << endl;
 	}
+}
 
-	delete o1;
-	delete o2;
-	delete o3;
-	delete o4;
+int main()
+{
+	//ParseInput();
+	// OrderBook orderBook;
+	// orderBook.addToBook(0, 1, 0, 10, 10.0);
+	// orderBook.addToBook(0, 1, 0, 10, 12.0);
+	// orderBook.addToBook(0, 1, 0, 10, 12.0);
+	// orderBook.addToBook(0, 1, 0, 10, 9.0);
+
+	// orderBook.addToBook(0, 1, 1, 10, 10.0);
+	// orderBook.addToBook(0, 1, 1, 10, 12.0);
+	// orderBook.addToBook(0, 1, 1, 10, 12.0);
+	// orderBook.addToBook(0, 1, 1, 10, 9.0);
+
+	// orderBook.printBuyBook();
+	// orderBook.deleteOrderUnit(0, 10.0);
+	// orderBook.printBuyBook();
+
+	vector<int> heapTree;
+
+	insert(heapTree, 3);
+	insert(heapTree, 4);
+	insert(heapTree, 9);
+	insert(heapTree, 5);
+	insert(heapTree, 2);
+
+	cout << "Max-Heap array: ";
+	printArray(heapTree);
+
+	deleteNode(heapTree, 4);
+
+	cout << "After deleting an element: ";
+
+	printArray(heapTree);
+
 	return 0;
 }

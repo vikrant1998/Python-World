@@ -16,6 +16,7 @@ class OrderUnit
 		double getPrice() { return price; }
 		void insertIntoChain(Order *o) { orderChain.insertIntoChain(o); }
 		void deleteFromChain(Order *o) { orderChain.deleteFromChain(o); }
+		void deleteChain() { orderChain.deleteChain(); }
 };
 
 struct BuyComparison 

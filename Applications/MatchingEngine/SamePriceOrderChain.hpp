@@ -71,6 +71,21 @@ class SamePriceTimeOrderChain
             }
         }
 
+        void deleteChain()
+        {
+			Order* nodePtr = head;
+			while(nodePtr != nullptr)
+			{
+				Order* tempNode = nodePtr->next;
+                if(tempNode != nullptr) tempNode->setPrev(nullptr);
+                nodePtr->setNext(nullptr);
+				delete nodePtr;
+				nodePtr = tempNode;
+			}
+            head = nullptr;
+            tail = nullptr;
+        }
+
 		void printChain()
 		{
 			Order* nodePtr = head;
@@ -93,17 +108,7 @@ class SamePriceTimeOrderChain
 
 		virtual ~SamePriceTimeOrderChain()
 		{
-			Order* nodePtr = head;
-			while(nodePtr != nullptr)
-			{
-				Order* tempNode = nodePtr->next;
-                if(tempNode != nullptr) tempNode->setPrev(nullptr);
-                nodePtr->setNext(nullptr);
-				delete nodePtr;
-				nodePtr = tempNode;
-			}
-            head = nullptr;
-            tail = nullptr;
+            deleteChain();
 		}
 };
 
