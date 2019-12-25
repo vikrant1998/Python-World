@@ -130,7 +130,7 @@ class OrderBook
                 p->orderChain.printChain();
                 cout << "---------------" << endl;
             }
-            cout << "====================" << endl << endl;
+            cout << "====================" << endl << endl;        
         }
 
         void printSellBook()

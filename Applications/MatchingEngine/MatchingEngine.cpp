@@ -73,11 +73,6 @@ int main()
 	orderBook.addToBook(0, 6, 0, 10, 9.0);
 	orderBook.addToBook(0, 7, 0, 10, 102.0);
 
-	orderBook.addToBook(0, 8, 1, 10, 420.0);
-	orderBook.addToBook(0, 9, 1, 10, 420.0);
-	orderBook.addToBook(0, 10, 1, 10, 69.0);
-	orderBook.addToBook(0, 11, 1, 10, 111.0);
-
 	orderBook.printBuyBook();
 	orderBook.cancelOrder(1, 1);
 	orderBook.cancelOrder(1, 2);
@@ -86,15 +81,6 @@ int main()
 	orderBook.cancelOrder(1, 5);
 	orderBook.cancelOrder(1, 6);
 	orderBook.printBuyBook();
-
-	// orderBook.printBuyBook();
-	// orderBook.removeOrderUnit(0, 10.0);
-	// orderBook.removeOrderUnit(0, 9.0);
-	// orderBook.printBuyBook();
-
-	// orderBook.printSellBook();
-	// orderBook.removeOrderUnit(1, 111.0);
-	// orderBook.printSellBook();
 
 	return 0;
 }
