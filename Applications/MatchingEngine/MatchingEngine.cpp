@@ -59,37 +59,42 @@ void ParseInput()
 
 		cout << "VIK: " << msgType << "," << orderid << "," << side << "," << quantity << "," << price << endl;
 	}
-} 
-
-void printPriorityQueue(priority_queue<OrderUnit*, vector<OrderUnit*>, BuyComparison>& Q)
-{
-	while (!Q.empty()) 
-	{ 
-		OrderUnit *p = Q.top(); 
-		Q.pop();
-		cout << "Price Level: " << p->getPrice() << endl;
-		p->orderChain.printChain();
-		cout << "---------------" << endl;
-	}
 }
 
 int main()
 {
 	//ParseInput();
-	// OrderBook orderBook;
-	// orderBook.addToBook(0, 1, 0, 10, 10.0);
-	// orderBook.addToBook(0, 1, 0, 10, 12.0);
-	// orderBook.addToBook(0, 1, 0, 10, 12.0);
-	// orderBook.addToBook(0, 1, 0, 10, 9.0);
+	OrderBook orderBook;
+	orderBook.addToBook(0, 1, 0, 10, 10.0);
+	orderBook.addToBook(0, 2, 0, 10, 10.0);
+	orderBook.addToBook(0, 3, 0, 10, 10.0);
+	orderBook.addToBook(0, 4, 0, 10, 12.0);
+	orderBook.addToBook(0, 5, 0, 10, 12.0);
+	orderBook.addToBook(0, 6, 0, 10, 9.0);
+	orderBook.addToBook(0, 7, 0, 10, 102.0);
 
-	// orderBook.addToBook(0, 1, 1, 10, 10.0);
-	// orderBook.addToBook(0, 1, 1, 10, 12.0);
-	// orderBook.addToBook(0, 1, 1, 10, 12.0);
-	// orderBook.addToBook(0, 1, 1, 10, 9.0);
+	orderBook.addToBook(0, 8, 1, 10, 420.0);
+	orderBook.addToBook(0, 9, 1, 10, 420.0);
+	orderBook.addToBook(0, 10, 1, 10, 69.0);
+	orderBook.addToBook(0, 11, 1, 10, 111.0);
+
+	orderBook.printBuyBook();
+	orderBook.cancelOrder(1, 1);
+	orderBook.cancelOrder(1, 2);
+	orderBook.cancelOrder(1, 3);
+	orderBook.cancelOrder(1, 4);
+	orderBook.cancelOrder(1, 5);
+	orderBook.cancelOrder(1, 6);
+	orderBook.printBuyBook();
 
 	// orderBook.printBuyBook();
-	// orderBook.deleteOrderUnit(0, 10.0);
+	// orderBook.removeOrderUnit(0, 10.0);
+	// orderBook.removeOrderUnit(0, 9.0);
 	// orderBook.printBuyBook();
+
+	// orderBook.printSellBook();
+	// orderBook.removeOrderUnit(1, 111.0);
+	// orderBook.printSellBook();
 
 	return 0;
 }

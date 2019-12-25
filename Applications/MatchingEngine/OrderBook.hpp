@@ -16,6 +16,7 @@ class OrderBook
         priority_queue<OrderUnit*, vector<OrderUnit*>, SellComparison> sellBook;
         unordered_map<double, OrderUnit*> buyPriceMap;
         unordered_map<double, OrderUnit*> sellPriceMap;
+        unordered_map<unsigned long int, Order*> idToOrderMap;
 
         void addToBook(int msgType, unsigned long int orderid, int side, unsigned long int quantity, double price)
         {
@@ -28,7 +29,8 @@ class OrderBook
                 // No order unit.
                 if(it == buyPriceMap.end())
                 {
-                    OrderUnit *ordUnit = new OrderUnit(price);
+                    OrderUnit *ordUnit = new OrderUnit(price, side);
+                    newOrder->setOrderUnitPtr(ordUnit);
                     ordUnit->insertIntoChain(newOrder);
                     buyBook.push(ordUnit);
                     buyPriceMap.insert(pair<double, OrderUnit*>(price, ordUnit));
@@ -36,9 +38,9 @@ class OrderBook
                 // Order unit exists, add to chain.
                 else
                 {
+                    newOrder->setOrderUnitPtr(it->second);
                     it->second->insertIntoChain(newOrder);
                 }
-                
             }
             // Sell Book.
             else if(side == 1)
@@ -47,7 +49,8 @@ class OrderBook
                 // No order unit.
                 if(it == sellPriceMap.end())
                 {
-                    OrderUnit *ordUnit = new OrderUnit(price);
+                    OrderUnit *ordUnit = new OrderUnit(price, side);
+                    newOrder->setOrderUnitPtr(ordUnit);
                     ordUnit->insertIntoChain(newOrder);
                     sellBook.push(ordUnit);
                     sellPriceMap.insert(pair<double, OrderUnit*>(price, ordUnit));
@@ -55,9 +58,13 @@ class OrderBook
                 // Order unit exists, add to chain.
                 else
                 {
+                    newOrder->setOrderUnitPtr(it->second);
                     it->second->insertIntoChain(newOrder);
                 }
             }
+
+            unordered_map<unsigned long int, Order*>::iterator idIterator = idToOrderMap.find(orderid);
+            if(idIterator == idToOrderMap.end()) idToOrderMap.insert(pair<unsigned long int, Order*>(orderid, newOrder));
         }
 
         void removeOrderUnit(int side, double price)
@@ -69,12 +76,45 @@ class OrderBook
                 if(it == buyPriceMap.end()) return;
                 it->second->orderChain.deleteChain();
                 buyPriceMap.erase(it);
+                priority_queue<OrderUnit*, vector<OrderUnit*>, BuyComparison> buyBookCopy;
+                while (!buyBook.empty()) 
+                { 
+                    OrderUnit *ordUnit = buyBook.top(); 
+                    buyBook.pop();
+                    // If price matches remove the order unit.
+                    if(ordUnit->getPrice() != price) buyBookCopy.push(ordUnit);
+                    else delete ordUnit;
+                }
+                buyBook = buyBookCopy;
             }
             // Sell Book.
             else if(side == 1)
             {
-
+                unordered_map<double, OrderUnit*>::iterator it = sellPriceMap.find(price);
+                if(it == sellPriceMap.end()) return;
+                it->second->orderChain.deleteChain();
+                sellPriceMap.erase(it);
+                priority_queue<OrderUnit*, vector<OrderUnit*>, SellComparison> sellBookCopy;
+                while (!sellBook.empty()) 
+                { 
+                    OrderUnit *ordUnit = sellBook.top(); 
+                    sellBook.pop();
+                    // If price matches remove the order unit.
+                    if(ordUnit->getPrice() != price) sellBookCopy.push(ordUnit);
+                    else delete ordUnit;
+                }
+                sellBook = sellBookCopy;
             }
+        }
+
+        void cancelOrder(int msgType, unsigned long int orderid)
+        {
+            unordered_map<unsigned long int, Order*>::iterator idIterator = idToOrderMap.find(orderid);
+            if(idIterator == idToOrderMap.end()) return;
+            OrderUnit *ordUnit = idIterator->second->getOrderUnitPtr();
+            ordUnit->deleteFromChain(idIterator->second);
+            idToOrderMap.erase(idIterator);
+            if(ordUnit->getHead() == nullptr) removeOrderUnit(ordUnit->getSide(), ordUnit->getPrice());
         }
 
         void printBuyBook()

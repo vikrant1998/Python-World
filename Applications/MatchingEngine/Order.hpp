@@ -5,6 +5,8 @@
 
 using namespace std;
 
+class OrderUnit;
+
 class Order
 {
 	private:
@@ -13,6 +15,7 @@ class Order
 		int side = 0;
 		unsigned long int quantity = 0;
 		double price = 0;
+		OrderUnit *orderUnitPtr = nullptr;
 
 	public:
 		Order* next = nullptr;
@@ -27,10 +30,13 @@ class Order
 		}
 		Order* getNext() { return next; }
 		Order* getPrev() { return prev; }
+		OrderUnit* getOrderUnitPtr() { return orderUnitPtr; }
 		void   setNext(Order *next) { this->next = next; }
 		void   setPrev(Order *prev) { this->prev = prev; }
+		void   setOrderUnitPtr(OrderUnit *orderUnitPtr) { this->orderUnitPtr = orderUnitPtr; }
 
 		double getPrice() { return price; }
+		unsigned long int getOrderid() { return orderid; }
 };
 
 #endif

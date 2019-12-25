@@ -14,6 +14,8 @@ class SamePriceTimeOrderChain
 		Order* tail = nullptr;
 
 	public:
+		Order* getHead() { return head; }
+
 		void insertIntoChain(Order *o)
 		{
 			// If the chain is empty.
@@ -91,7 +93,7 @@ class SamePriceTimeOrderChain
 			Order* nodePtr = head;
 			while(nodePtr != nullptr)
 			{
-				cout << nodePtr->getPrice() << endl;
+				cout << "ID: " << nodePtr->getOrderid() << ", Price: " << nodePtr->getPrice() << endl;
 				nodePtr = nodePtr->next;
 			}
 		}

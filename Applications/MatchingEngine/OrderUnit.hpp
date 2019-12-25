@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "SamePriceOrderChain.hpp"
+#include "Order.hpp"
 
 using namespace std;
 
@@ -10,13 +11,20 @@ class OrderUnit
 {
 	public:
 		double price;
+		int side;
 		SamePriceTimeOrderChain orderChain;
 	public:
-		OrderUnit(int price) { this->price = price; }
+		OrderUnit(int price, int side) 
+		{ 
+			this->price = price; 
+			this->side = side;
+		}
 		double getPrice() { return price; }
+		double getSide()  { return side; }
 		void insertIntoChain(Order *o) { orderChain.insertIntoChain(o); }
 		void deleteFromChain(Order *o) { orderChain.deleteFromChain(o); }
 		void deleteChain() { orderChain.deleteChain(); }
+		Order* getHead() { orderChain.getHead(); }
 };
 
 struct BuyComparison 
