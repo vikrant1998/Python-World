@@ -37,6 +37,8 @@ class Order
 
 		double getPrice() { return price; }
 		unsigned long int getOrderid() { return orderid; }
+		unsigned long int getQuantity() { return quantity; }
+		void setQuantity(unsigned long int quantity) { this->quantity = quantity; }
 };
 
 #endif

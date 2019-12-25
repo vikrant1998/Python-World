@@ -93,7 +93,7 @@ class SamePriceTimeOrderChain
 			Order* nodePtr = head;
 			while(nodePtr != nullptr)
 			{
-				cout << "ID: " << nodePtr->getOrderid() << ", Price: " << nodePtr->getPrice() << endl;
+				cout << "ID: " << nodePtr->getOrderid() << ", Price: " << nodePtr->getPrice() << ", Qty: " << nodePtr->getQuantity() << endl;
 				nodePtr = nodePtr->next;
 			}
 		}

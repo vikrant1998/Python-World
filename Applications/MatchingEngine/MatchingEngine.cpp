@@ -15,6 +15,7 @@ void ParseInput();
 
 void ParseInput()
 {
+	OrderBook orderBook;
 	string str;
 	while(getline(cin, str))
 	{
@@ -31,6 +32,7 @@ void ParseInput()
 		if(result.size() != 2 && result.size() != 5)
 		{
 			// Handle error case.
+			cout << "BAD MESSAGE" << endl;
 			continue;
 		}
 
@@ -54,33 +56,25 @@ void ParseInput()
 		catch(...)
 		{
 			// Handle error case.
+			cout << "BAD MESSAGE" << endl;
 			continue;
 		}
 
-		cout << "VIK: " << msgType << "," << orderid << "," << side << "," << quantity << "," << price << endl;
+		// New Order.
+		if(result.size() == 5)
+		{
+			orderBook.addToBook(msgType, orderid, side, quantity, price);
+		}
+		else if(result.size() == 2)
+		{
+			orderBook.cancelOrder(msgType, orderid);
+		}
+		
 	}
 }
 
 int main()
 {
-	//ParseInput();
-	OrderBook orderBook;
-	orderBook.addToBook(0, 1, 0, 10, 10.0);
-	orderBook.addToBook(0, 2, 0, 10, 10.0);
-	orderBook.addToBook(0, 3, 0, 10, 10.0);
-	orderBook.addToBook(0, 4, 0, 10, 12.0);
-	orderBook.addToBook(0, 5, 0, 10, 12.0);
-	orderBook.addToBook(0, 6, 0, 10, 9.0);
-	orderBook.addToBook(0, 7, 0, 10, 102.0);
-
-	orderBook.printBuyBook();
-	orderBook.cancelOrder(1, 1);
-	orderBook.cancelOrder(1, 2);
-	orderBook.cancelOrder(1, 3);
-	orderBook.cancelOrder(1, 4);
-	orderBook.cancelOrder(1, 5);
-	orderBook.cancelOrder(1, 6);
-	orderBook.printBuyBook();
-
+	ParseInput();
 	return 0;
 }

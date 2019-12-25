@@ -18,8 +18,97 @@ class OrderBook
         unordered_map<double, OrderUnit*> sellPriceMap;
         unordered_map<unsigned long int, Order*> idToOrderMap;
 
+    public:
+
+        void outputFillEvent(int side, Order *buyOrd, Order *sellOrd)
+        {
+            // Print fully fill event for aggressive orders.
+            if(side == 0 && buyOrd->getQuantity() == 0) cout << "3," << buyOrd->getOrderid() << endl;
+            else if(side == 1 && sellOrd->getQuantity() == 0) cout << "3," << sellOrd->getOrderid() << endl;
+
+            // Print partially fill event for aggressive orders.
+            if(side == 0 && buyOrd->getQuantity() != 0) cout << "4," << buyOrd->getOrderid() << "," << buyOrd->getQuantity() << endl;
+            else if(side == 1 && sellOrd->getQuantity() != 0) cout << "4," << sellOrd->getOrderid() << "," << sellOrd->getQuantity() << endl;
+
+            // Print fully fill event for resting orders.
+            if(side == 1 && buyOrd->getQuantity() == 0) cout << "3," << buyOrd->getOrderid() << endl;
+            else if(side == 0 && sellOrd->getQuantity() == 0) cout << "3," << sellOrd->getOrderid() << endl;
+
+            // Print partially fill event for resting orders.
+            if(side == 1 && buyOrd->getQuantity() != 0) cout << "4," << buyOrd->getOrderid() << "," << buyOrd->getQuantity() << endl;
+            else if(side == 0 && sellOrd->getQuantity() != 0) cout << "4," << sellOrd->getOrderid() << "," << sellOrd->getQuantity() << endl;
+        }
+
+        void matchOrder(int side)
+        {
+            while(true)
+            {
+                // Both the books have to have data to match.
+                if(buyBook.empty() || sellBook.empty()) return;
+                OrderUnit *sellUnit = sellBook.top();
+                OrderUnit *buyUnit  =  buyBook.top();
+
+                // Check for price match.
+                if(buyUnit == nullptr || sellUnit == nullptr) return;
+                if(buyUnit->getPrice() < sellUnit->getPrice()) return;
+
+                Order* buyOrd  = buyUnit->getHead();
+                Order* sellOrd = sellUnit->getHead(); 
+                while(buyOrd != nullptr && sellOrd != nullptr)
+                {
+                    unsigned long int buyQty  = buyOrd->getQuantity();
+                    unsigned long int sellQty = sellOrd->getQuantity();
+                    unsigned long int dispQty = 0;
+                    
+                    // Generate Trade Event.
+                    if(side == 0) 
+                    {
+                        if(buyQty >= sellQty) dispQty = sellQty;
+                        else dispQty = buyQty;
+                        cout << "2," << dispQty << "," << sellOrd->getPrice() << endl;
+                    }
+                    else
+                    {
+                        if(sellQty >= buyQty) dispQty = buyQty;
+                        else dispQty = sellQty;
+                        cout << "2," << dispQty << "," << buyOrd->getPrice() << endl;
+                    }
+                    
+                    buyOrd->setQuantity(buyQty - min(buyQty, sellQty));
+                    sellOrd->setQuantity(sellQty - min(buyQty, sellQty));
+
+                    outputFillEvent(side, buyOrd, sellOrd);
+
+                    // Fully Fill.
+                    if(buyOrd->getQuantity() == 0)
+                    {
+                        idToOrderMap.erase(buyOrd->getOrderid());
+                        buyUnit->deleteFromChain(buyOrd);
+                    }
+
+                    // Fully Fill.
+                    if(sellOrd->getQuantity() == 0)
+                    {
+                        idToOrderMap.erase(sellOrd->getOrderid());
+                        sellUnit->deleteFromChain(sellOrd);
+                    }
+
+                    buyOrd  = buyUnit->getHead();
+                    sellOrd = sellUnit->getHead(); 
+                    if(buyOrd == nullptr)  deleteOrderUnit(0, buyUnit->getPrice());
+                    if(sellOrd == nullptr) deleteOrderUnit(1, sellUnit->getPrice());
+                }
+            }
+        }
+
         void addToBook(int msgType, unsigned long int orderid, int side, unsigned long int quantity, double price)
         {
+            unordered_map<unsigned long int, Order*>::iterator it = idToOrderMap.find(orderid);
+            if(it != idToOrderMap.end())
+            {
+                cout << "BAD MESSAGE" << endl;
+                return;
+            }
             Order* newOrder = new Order(msgType, orderid, side, quantity, price);
 
             // Buy Book.
@@ -65,9 +154,11 @@ class OrderBook
 
             unordered_map<unsigned long int, Order*>::iterator idIterator = idToOrderMap.find(orderid);
             if(idIterator == idToOrderMap.end()) idToOrderMap.insert(pair<unsigned long int, Order*>(orderid, newOrder));
+
+            matchOrder(side);
         }
 
-        void removeOrderUnit(int side, double price)
+        void deleteOrderUnit(int side, double price)
         {
             // Buy Book.
             if(side == 0)
@@ -114,7 +205,7 @@ class OrderBook
             OrderUnit *ordUnit = idIterator->second->getOrderUnitPtr();
             ordUnit->deleteFromChain(idIterator->second);
             idToOrderMap.erase(idIterator);
-            if(ordUnit->getHead() == nullptr) removeOrderUnit(ordUnit->getSide(), ordUnit->getPrice());
+            if(ordUnit->getHead() == nullptr) deleteOrderUnit(ordUnit->getSide(), ordUnit->getPrice());
         }
 
         void printBuyBook()
