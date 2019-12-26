@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class SamePriceTimeOrderChain
+class SamePriceOrderChain
 {
 	private:
 		Order* head = nullptr;
@@ -18,7 +18,7 @@ class SamePriceTimeOrderChain
 		void insertIntoChain(Order *o);
 		void deleteFromChain(Order *o);
 		void deleteChain();
-		virtual ~SamePriceTimeOrderChain() { deleteChain(); }
+		virtual ~SamePriceOrderChain() { deleteChain(); }
 };
 
 #endif

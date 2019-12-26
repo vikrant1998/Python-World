@@ -12,7 +12,7 @@ class OrderUnit
 	public:
 		double price;
 		int side;
-		SamePriceTimeOrderChain orderChain;
+		SamePriceOrderChain orderChain;
 
 	public:
 		OrderUnit(int price, int side) { this->price = price; this->side = side; }

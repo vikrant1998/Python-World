@@ -11,9 +11,9 @@
 
 using namespace std;
 
-void ParseInput();
+void EngineStart();
 
-void ParseInput()
+void EngineStart()
 {
 	OrderBook orderBook;
 	string str;
@@ -32,7 +32,7 @@ void ParseInput()
 		if(result.size() != 2 && result.size() != 5)
 		{
 			// Handle error case.
-			cout << "BAD MESSAGE: Invalid Input" << endl;
+			fprintf(stderr, "BAD MESSAGE: Invalid Input\n");
 			continue;
 		}
 
@@ -52,11 +52,36 @@ void ParseInput()
 				quantity = std::stol(result.at(3));
 				price = std::stod(result.at(4));
 			}
+
+			// Msg type is 0 or 1.
+			if(msgType != 0 && msgType != 1)
+			{
+				fprintf(stderr, "BAD MESSAGE: Invalid msgType\n");
+				continue;
+			}
+			// orderid is a positive integer.
+			if(orderid <= 0)
+			{
+				fprintf(stderr, "BAD MESSAGE: Invalid orderid\n");
+				continue;
+			}
+			// side is 0 or 1.
+			if(side != 0 && side != 1)
+			{
+				fprintf(stderr, "BAD MESSAGE: Invalid side\n");
+				continue;
+			}
+			// qty is positive.
+			if(quantity < 0)
+			{
+				fprintf(stderr, "BAD MESSAGE: Invalid quantity\n");
+				continue;	
+			}
 		}
 		catch(...)
 		{
 			// Handle error case.
-			cout << "BAD MESSAGE: Invalid Input" << endl;
+			fprintf(stderr, "BAD MESSAGE: Invalid Input\n");
 			continue;
 		}
 
@@ -65,6 +90,7 @@ void ParseInput()
 		{
 			orderBook.addToBook(msgType, orderid, side, quantity, price);
 		}
+		// Cancel order.
 		else if(result.size() == 2)
 		{
 			orderBook.cancelOrder(msgType, orderid);
@@ -75,6 +101,6 @@ void ParseInput()
 
 int main()
 {
-	ParseInput();
+	EngineStart();
 	return 0;
 }

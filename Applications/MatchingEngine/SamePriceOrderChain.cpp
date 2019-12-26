@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void SamePriceTimeOrderChain::insertIntoChain(Order *o)
+void SamePriceOrderChain::insertIntoChain(Order *o)
 {
     // If the chain is empty.
     if(head == nullptr && tail == nullptr)
@@ -25,7 +25,7 @@ void SamePriceTimeOrderChain::insertIntoChain(Order *o)
     }
 }
 
-void SamePriceTimeOrderChain::deleteFromChain(Order *o)
+void SamePriceOrderChain::deleteFromChain(Order *o)
 {
     if(o == nullptr || head == nullptr || tail == nullptr) return;
     
@@ -63,7 +63,7 @@ void SamePriceTimeOrderChain::deleteFromChain(Order *o)
     }
 }
 
-void SamePriceTimeOrderChain::deleteChain()
+void SamePriceOrderChain::deleteChain()
 {
     Order* nodePtr = head;
     while(nodePtr != nullptr)

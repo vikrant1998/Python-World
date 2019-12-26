@@ -93,7 +93,8 @@ void OrderBook::addToBook(int msgType, unsigned long int orderid, int side, unsi
     unordered_map<unsigned long int, Order*>::iterator it = idToOrderMap.find(orderid);
     if(it != idToOrderMap.end())
     {
-        cout << "BAD MESSAGE: OrderID[" << to_string(orderid) << "] already exists" << endl;
+        string msg = "BAD MESSAGE: OrderID[" + to_string(orderid) + "] already exists\n"; 
+        fprintf(stderr, "%s", msg.c_str());
         return;
     }
     Order* newOrder = new Order(msgType, orderid, side, quantity, price);
@@ -190,7 +191,8 @@ void OrderBook::cancelOrder(int msgType, unsigned long int orderid)
     unordered_map<unsigned long int, Order*>::iterator idIterator = idToOrderMap.find(orderid);
     if(idIterator == idToOrderMap.end())
     {
-        cout << "BAD MESSAGE: OrderID[" << to_string(orderid) << "] does not exist" << endl;
+        string msg = "BAD MESSAGE: OrderID[" + to_string(orderid) + "] does not exist\n";
+        fprintf(stderr, "%s", msg.c_str());
         return;
     }
     OrderUnit *ordUnit = idIterator->second->getOrderUnitPtr();
