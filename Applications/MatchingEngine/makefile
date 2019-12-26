@@ -1,5 +1,5 @@
 compile: MatchingEngine.cpp
-	g++ SamePriceOrderChain.hpp OrderUnit.hpp Order.hpp OrderBook.hpp MatchingEngine.cpp -o MatchingEngine
+	g++ SamePriceOrderChain.hpp SamePriceOrderChain.cpp OrderUnit.hpp Order.hpp OrderBook.hpp OrderBook.cpp MatchingEngine.cpp -o MatchingEngine
 
 test:
 	touch Testcases/ExpectedOutput/EmptyFile.txt

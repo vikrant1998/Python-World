@@ -13,12 +13,9 @@ class OrderUnit
 		double price;
 		int side;
 		SamePriceTimeOrderChain orderChain;
+
 	public:
-		OrderUnit(int price, int side) 
-		{ 
-			this->price = price; 
-			this->side = side;
-		}
+		OrderUnit(int price, int side) { this->price = price; this->side = side; }
 		double getPrice() { return price; }
 		double getSide()  { return side; }
 		void insertIntoChain(Order *o) { orderChain.insertIntoChain(o); }
