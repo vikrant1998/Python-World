@@ -32,7 +32,7 @@ void ParseInput()
 		if(result.size() != 2 && result.size() != 5)
 		{
 			// Handle error case.
-			cout << "BAD MESSAGE" << endl;
+			cout << "BAD MESSAGE: Invalid Input" << endl;
 			continue;
 		}
 
@@ -56,7 +56,7 @@ void ParseInput()
 		catch(...)
 		{
 			// Handle error case.
-			cout << "BAD MESSAGE" << endl;
+			cout << "BAD MESSAGE: Invalid Input" << endl;
 			continue;
 		}
 

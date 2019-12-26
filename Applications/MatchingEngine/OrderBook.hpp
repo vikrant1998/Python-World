@@ -106,7 +106,7 @@ class OrderBook
             unordered_map<unsigned long int, Order*>::iterator it = idToOrderMap.find(orderid);
             if(it != idToOrderMap.end())
             {
-                cout << "BAD MESSAGE" << endl;
+                cout << "BAD MESSAGE: OrderID[" << to_string(orderid) << "] already exists" << endl;
                 return;
             }
             Order* newOrder = new Order(msgType, orderid, side, quantity, price);
@@ -201,7 +201,11 @@ class OrderBook
         void cancelOrder(int msgType, unsigned long int orderid)
         {
             unordered_map<unsigned long int, Order*>::iterator idIterator = idToOrderMap.find(orderid);
-            if(idIterator == idToOrderMap.end()) return;
+            if(idIterator == idToOrderMap.end())
+            {
+                cout << "BAD MESSAGE: OrderID[" << to_string(orderid) << "] does not exist" << endl;
+                return;
+            }
             OrderUnit *ordUnit = idIterator->second->getOrderUnitPtr();
             ordUnit->deleteFromChain(idIterator->second);
             idToOrderMap.erase(idIterator);
